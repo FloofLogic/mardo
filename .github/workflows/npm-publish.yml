@@ -1,0 +1,68 @@
+name: npm staged publish
+
+on:
+  push:
+    tags:
+      - "npm-v*"
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: npm-stage-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  stage:
+    runs-on: macos-15
+    environment: npm
+    timeout-minutes: 20
+    steps:
+      - name: Check out the tagged public source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+
+      - name: Use the supported Node release
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: "24"
+          registry-url: https://registry.npmjs.org/
+          package-manager-cache: false
+
+      - name: Require the canonical Mardo release tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          package_name=$(node -p "require('./package.json').name")
+          package_version=$(node -p "require('./package.json').version")
+          [[ $package_name == mardo ]]
+          [[ $GITHUB_REF == "refs/tags/npm-v${package_version}" ]]
+
+          release_record=$(mktemp)
+          trap 'rm -f "$release_record"' EXIT
+          curl --fail --silent --show-error --max-redirs 0 --max-time 30 \
+            --max-filesize 1048576 \
+            --output "$release_record" \
+            https://downloads.flooflogic.com/mardo/release.json
+          release_version=$(jq -er '
+            select(
+              .schema == 1
+              and .product == "Mardo"
+              and .availability == "public"
+              and .teamId == "CC4EC596R5"
+            ) | .version
+          ' "$release_record")
+          [[ $package_version == "$release_version" ]]
+
+      - name: Audit the exact package source
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --global npm@11.19.1 --ignore-scripts --no-audit --no-fund
+          [[ $(npm --version) == 11.19.1 ]]
+          npm test
+          npm run pack:audit
+          npm run acceptance
+
+      - name: Stage for owner review and 2FA approval
+        run: npm stage publish . --access public --provenance
