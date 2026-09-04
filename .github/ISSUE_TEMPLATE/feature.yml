@@ -30,7 +30,7 @@ body:
     id: environment
     attributes:
       label: Mardo and macOS versions
-      placeholder: Mardo 0.9.12 on macOS 15.6.1
+      placeholder: Mardo 0.9.13 on macOS 15.7
   - type: checkboxes
     id: safety
     attributes:

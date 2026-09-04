@@ -23,9 +23,12 @@ jobs:
           fi
 
           brew install --cask flooflogic/tap/mardo
+          expected_version="$(curl -fsS --max-time 30 https://downloads.flooflogic.com/mardo/release.json | jq -r '.version')"
+          cask_version="$(brew info --json=v2 --cask flooflogic/tap/mardo | jq -r '.casks[0].version')"
           command_path="$(command -v mardo)"
           reported_version="$(/usr/bin/perl -e 'alarm shift; exec @ARGV' 120 "$command_path" --version)"
-          [[ "$reported_version" == "mardo 0.9.13" ]]
+          [[ "$cask_version" == "$expected_version" ]]
+          [[ "$reported_version" == "mardo $expected_version" ]]
           [[ ! -e /Applications/Mardo.app/Contents/Helpers/md ]]
 
           current_md=absent

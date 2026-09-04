@@ -10,9 +10,21 @@ Download the current signed and notarized Mardo release from
 [mardo.app](https://downloads.flooflogic.com/mardo/latest/Mardo.zip). Mardo
 requires macOS 14 Sonoma or later.
 
-Homebrew and npm installation under the single command name `mardo` are being
-prepared. Installation commands will appear here only after their public paths
-have been verified from a clean machine.
+## Homebrew
+
+Install the current release from the Floof Logic tap:
+
+```sh
+brew install --cask flooflogic/tap/mardo
+mardo --version
+mardo "notes.md"
+```
+
+The cask installs the same signed, notarized, Universal `Mardo.app` as the
+direct download and exposes only the `mardo` command. The official bare
+Homebrew command will be documented only after upstream acceptance.
+
+npm installation under the same `mardo` command name is being prepared.
 
 ## Support
 

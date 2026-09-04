@@ -28,7 +28,7 @@ body:
     attributes:
       label: Mardo version and build
       description: Find this in Mardo → About Mardo or run `mardo --version` and include the build from About.
-      placeholder: 0.9.12, build 612
+      placeholder: 0.9.13, build 619
     validations:
       required: true
   - type: input
