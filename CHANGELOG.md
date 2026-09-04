@@ -1,5 +1,18 @@
 # Mardo release notes
 
+## 0.9.13 — public beta
+
+Mardo now ships its bundled command-line opener as `mardo`. It opens Markdown
+paths in the native app while preserving the existing bounded batch validation,
+running-app reuse, and first-save behavior. The former Mardo-owned `md` command
+is retired; Markdown's `.md` filename extension is unchanged.
+
+Appearance settings now include Core Text font smoothing. It is available as
+an explicit preference and is disabled by default.
+
+Download the exact signed and notarized release from
+[mardo.app](https://mardo.flooflogic.com/releases/Mardo-0.9.13.zip).
+
 ## 0.9.12 — public beta
 
 Rendered editing is more predictable: Terminal pastes retain their physical
