@@ -1,0 +1,39 @@
+name: Homebrew acceptance
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  clean-macos:
+    runs-on: macos-15
+    timeout-minutes: 15
+    steps:
+      - name: Install, verify, and uninstall the public cask
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          prefix="$(brew --prefix)"
+          prior_md=absent
+          if [[ -e "$prefix/bin/md" || -L "$prefix/bin/md" ]]; then
+            prior_md="$(readlink "$prefix/bin/md" 2>/dev/null || printf present)"
+          fi
+
+          brew install --cask flooflogic/tap/mardo
+          command_path="$(command -v mardo)"
+          reported_version="$(/usr/bin/perl -e 'alarm shift; exec @ARGV' 120 "$command_path" --version)"
+          [[ "$reported_version" == "mardo 0.9.13" ]]
+          [[ ! -e /Applications/Mardo.app/Contents/Helpers/md ]]
+
+          current_md=absent
+          if [[ -e "$prefix/bin/md" || -L "$prefix/bin/md" ]]; then
+            current_md="$(readlink "$prefix/bin/md" 2>/dev/null || printf present)"
+          fi
+          [[ "$current_md" == "$prior_md" ]]
+
+          brew uninstall --cask mardo
+          [[ ! -e "$prefix/bin/mardo" && ! -L "$prefix/bin/mardo" ]]
+          [[ ! -e /Applications/Mardo.app ]]
