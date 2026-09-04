@@ -1,0 +1,48 @@
+{
+  "name": "mardo",
+  "version": "0.9.13",
+  "description": "Install and open the signed Mardo Markdown app from the command line on macOS.",
+  "keywords": [
+    "mardo",
+    "markdown",
+    "macos"
+  ],
+  "homepage": "https://mardo.app/",
+  "bugs": {
+    "url": "https://github.com/FloofLogic/mardo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FloofLogic/mardo.git"
+  },
+  "license": "UNLICENSED",
+  "author": "Floof Logic LLC",
+  "type": "commonjs",
+  "bin": {
+    "mardo": "bin/mardo.js"
+  },
+  "files": [
+    "bin/mardo.js",
+    "lib/adapter.js",
+    "NPM_CONTRACT.md"
+  ],
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "arm64",
+    "x64"
+  ],
+  "engines": {
+    "node": ">=18.17"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "pack:audit": "node scripts/audit-pack.js",
+    "acceptance": "bash test/npm-real-acceptance.sh"
+  }
+}

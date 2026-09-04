@@ -24,7 +24,24 @@ The cask installs the same signed, notarized, Universal `Mardo.app` as the
 direct download and exposes only the `mardo` command. The official bare
 Homebrew command will be documented only after upstream acceptance.
 
-npm installation under the same `mardo` command name is being prepared.
+## npm
+
+Install the dependency-free macOS adapter in a project:
+
+```sh
+npm install mardo
+npx mardo --version
+npx mardo "notes.md"
+```
+
+Or install it in a user-owned global npm prefix to expose `mardo` directly.
+The package runs no install-time download or lifecycle script. On its first
+explicit invocation it reads Mardo's canonical public release record, verifies
+the immutable archive's size and SHA-256, verifies the extracted app's
+Developer ID identity and notarization, and then runs the same signed native
+`mardo` helper used by Homebrew. It does not require Homebrew or an app already
+installed in `/Applications`. See [NPM_CONTRACT.md](NPM_CONTRACT.md) for cache,
+network, update, removal, and failure behavior.
 
 ## Support
 

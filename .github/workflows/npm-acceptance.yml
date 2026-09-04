@@ -1,0 +1,32 @@
+name: npm acceptance
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  clean-macos:
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - name: Fetch the exact public revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          git init source
+          git -C source remote add origin "https://github.com/${GITHUB_REPOSITORY}.git"
+          git -C source fetch --depth=1 origin "$GITHUB_SHA"
+          git -C source checkout --detach FETCH_HEAD
+
+      - name: Audit and exercise the package without Homebrew
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd source
+          node --version
+          npm --version
+          npm test
+          npm run pack:audit
+          MARDO_NPM_GUI_ACCEPTANCE=1 npm run acceptance
