@@ -1,0 +1,40 @@
+name: Feature request
+description: Suggest one focused improvement that can be discussed publicly.
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the workflow you want to improve, not private document content. Purchase, licensing, and account requests belong at support@mardo.app.
+  - type: textarea
+    id: workflow
+    attributes:
+      label: What are you trying to do?
+      description: Describe the current workflow and where it becomes difficult.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: What outcome would help?
+      description: Explain the result you need without prescribing an implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What have you tried?
+  - type: input
+    id: environment
+    attributes:
+      label: Mardo and macOS versions
+      placeholder: Mardo 0.9.12 on macOS 15.6.1
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Public-report check
+      options:
+        - label: This request contains no private document content, credentials, license/order data, or vulnerability details.
+          required: true

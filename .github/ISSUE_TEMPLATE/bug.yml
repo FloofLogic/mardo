@@ -1,0 +1,101 @@
+name: Bug report
+description: Report a reproducible Mardo problem that is safe to discuss publicly.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve Mardo. Do not attach private documents, license data, receipts, credentials, or details of an unpatched vulnerability. Use the private routes in SUPPORT.md and SECURITY.md instead.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Editing
+        - Rendering
+        - Performance
+        - Accessibility
+        - Installation or update
+        - Finder preview or thumbnail
+        - Export
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: mardo_version
+    attributes:
+      label: Mardo version and build
+      description: Find this in Mardo → About Mardo or run `mardo --version` and include the build from About.
+      placeholder: 0.9.12, build 612
+    validations:
+      required: true
+  - type: input
+    id: macos_version
+    attributes:
+      label: macOS version
+      placeholder: macOS 15.6.1
+    validations:
+      required: true
+  - type: dropdown
+    id: architecture
+    attributes:
+      label: Mac architecture
+      options:
+        - Apple silicon (arm64)
+        - Intel (x86_64)
+        - Unsure
+    validations:
+      required: true
+  - type: input
+    id: mode
+    attributes:
+      label: Mardo mode
+      description: Include View, Rendered Edit, or Source Code, when relevant.
+      placeholder: Rendered Edit
+  - type: input
+    id: appearance
+    attributes:
+      label: Theme and zoom
+      description: Include these only when they may affect the problem.
+      placeholder: MardoDark at 110%
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal non-sensitive reproduction
+      description: Use invented Markdown if document content matters. List exact steps from launch.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: dropdown
+    id: install_source
+    attributes:
+      label: Installation source
+      options:
+        - Homebrew (`flooflogic/tap/mardo`)
+        - npm (`mardo`)
+        - Direct download from mardo.app
+        - Mardo self-update
+        - Development build
+        - Unsure
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Public-report check
+      options:
+        - label: I removed private documents, license/order data, credentials, sensitive paths, and unpatched vulnerability details from this report.
+          required: true
