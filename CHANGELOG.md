@@ -1,5 +1,21 @@
 # Mardo release notes
 
+## 0.9.14 — public beta
+
+Pasting rich Gmail threads now preserves intended blank lines without stray
+backslashes, and Unicode remains intact alongside HTML entities.
+
+Rendered task lists now have compact, rounded, vertically centered checkboxes.
+In Rendered Edit they check and uncheck without moving the caret or selection,
+and complete-row selection includes the concealed task prefix.
+
+Ordinary table cells now reflow as zoom changes so later columns remain visible
+when the table can fit. Mardo's themes, toolbar, headings, code, tables, and
+Appearance preview also receive the accepted visual-hierarchy refinements.
+
+Download the exact signed and notarized release from
+[mardo.app](https://mardo.flooflogic.com/releases/Mardo-0.9.14.zip).
+
 ## 0.9.13 — public beta
 
 Mardo now ships its bundled command-line opener as `mardo`. It opens Markdown

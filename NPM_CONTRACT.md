@@ -1,6 +1,6 @@
 # Mardo npm delivery contract
 
-Status: current for `mardo` 0.9.13.
+Status: current for `mardo` 0.9.14.
 
 ## What installation does
 
