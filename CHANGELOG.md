@@ -1,5 +1,24 @@
 # Mardo release notes
 
+## 0.9.15 — public beta
+
+Finder Quick Look now loads remote images through the same bounded,
+cookie-free policy as the app while presenting Markdown immediately instead
+of waiting for downloads. Remote images work by default, can be disabled
+globally in Settings, and retry cleanly when a preview is reopened after a
+transient failure. Finder thumbnails remain network-silent.
+
+Mardo now takes ownership of its exact Quick Look and thumbnail extensions on
+every launch, clearing stale registrations and refreshing Finder's document
+icons. An automatic update no longer rolls back a valid app when macOS briefly
+delays extension registration; the launched app completes the handoff.
+
+Callout icons are now vertically centered with their titles in the editor and
+exported PDF.
+
+Download the exact signed and notarized release from
+[mardo.app](https://mardo.flooflogic.com/releases/Mardo-0.9.15.zip).
+
 ## 0.9.14 — public beta
 
 Pasting rich Gmail threads now preserves intended blank lines without stray

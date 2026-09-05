@@ -1,6 +1,6 @@
 {
   "name": "mardo",
-  "version": "0.9.14",
+  "version": "0.9.15",
   "description": "Install and open the signed Mardo Markdown app from the command line on macOS.",
   "keywords": [
     "mardo",

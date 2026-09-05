@@ -26,8 +26,8 @@ const actual = report.files.map((entry) => `package/${entry.path}`).sort();
 if (JSON.stringify(actual) !== JSON.stringify(expected)) {
   throw new Error(`packed file allowlist mismatch: ${JSON.stringify(actual)}`);
 }
-if (report.name !== "mardo" || report.version !== "0.9.14") {
-  throw new Error("packed identity is not mardo 0.9.14");
+if (report.name !== "mardo" || report.version !== "0.9.15") {
+  throw new Error("packed identity is not mardo 0.9.15");
 }
 if (report.entryCount !== expected.length || report.unpackedSize > 131_072) {
   throw new Error("packed adapter exceeds its file-count or expanded-size bound");

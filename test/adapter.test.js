@@ -10,7 +10,7 @@ const test = require("node:test");
 
 const adapter = require("../lib/adapter.js");
 
-function record(version = "0.9.14", build = 645, archiveBytes = Buffer.from("archive")) {
+function record(version = "0.9.15", build = 692, archiveBytes = Buffer.from("archive")) {
   return {
     schema: 1,
     product: "Mardo",
@@ -126,7 +126,7 @@ test("cache acquisition is atomic, updates by canonical version, and works offli
   };
 
   const first = await adapter.resolveApplication(options);
-  assert.equal(first.record.version, "0.9.14");
+  assert.equal(first.record.version, "0.9.15");
   assert.equal(downloads, 1);
   assert.equal(fs.existsSync(first.helper), true);
   assert.equal(fs.readdirSync(cacheRoot).some((name) => name.startsWith(".work-")), false);
@@ -134,9 +134,9 @@ test("cache acquisition is atomic, updates by canonical version, and works offli
   fs.writeFileSync(path.join(cacheRoot, "current.json"), "");
   now += 10;
   const repaired = await adapter.resolveApplication(options);
-  assert.equal(repaired.record.version, "0.9.14");
+  assert.equal(repaired.record.version, "0.9.15");
   assert.equal(downloads, 1);
-  assert.equal(adapter.parseReleaseRecord(fs.readFileSync(path.join(cacheRoot, "current.json"))).version, "0.9.14");
+  assert.equal(adapter.parseReleaseRecord(fs.readFileSync(path.join(cacheRoot, "current.json"))).version, "0.9.15");
 
   now += 10;
   options.fetchRecord = async () => {
@@ -145,19 +145,19 @@ test("cache acquisition is atomic, updates by canonical version, and works offli
   };
   const offline = await adapter.resolveApplication(options);
   assert.equal(offline.offline, true);
-  assert.equal(offline.record.version, "0.9.14");
+  assert.equal(offline.record.version, "0.9.15");
   assert.equal(downloads, 1);
 
   now += 10;
-  selected = record("0.9.15", 646, Buffer.from("new archive"));
+  selected = record("0.9.16", 693, Buffer.from("new archive"));
   options.fetchRecord = async () => {
     fetches += 1;
     return { record: selected, raw: encoded(selected) };
   };
   const updated = await adapter.resolveApplication(options);
-  assert.equal(updated.record.version, "0.9.15");
+  assert.equal(updated.record.version, "0.9.16");
   assert.equal(downloads, 2);
-  assert.deepEqual(fs.readdirSync(path.join(cacheRoot, "versions")).sort(), ["0.9.14", "0.9.15"]);
+  assert.deepEqual(fs.readdirSync(path.join(cacheRoot, "versions")).sort(), ["0.9.15", "0.9.16"]);
   assert.ok(fetches >= 3);
 });
 
@@ -190,7 +190,7 @@ test("failed acquisition leaves no promoted version or interrupted work", async 
 test("foreign cache paths are refused without changing their bytes", async (t) => {
   const home = temporaryHome(t);
   const cache = adapter.prepareCache({ homeDirectory: home, cacheRoot: adapter.defaultCacheRoot(home) });
-  const foreign = path.join(cache.versions, "0.9.14");
+  const foreign = path.join(cache.versions, "0.9.15");
   fs.mkdirSync(foreign);
   fs.writeFileSync(path.join(foreign, "keep.txt"), "foreign");
   const selected = record();
