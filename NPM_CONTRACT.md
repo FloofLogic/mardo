@@ -61,8 +61,9 @@ check is never hidden by an older cached app.
 
 `npm uninstall mardo` removes the npm package and its command link but runs no
 cleanup script and intentionally leaves the verified app cache, just as it
-leaves ordinary user state. After quitting Mardo, a person can remove only the
-adapter-owned cached applications with:
+leaves ordinary user state. After quitting any Mardo instance launched from
+that adapter cache, a person can remove only the adapter-owned cached
+applications with:
 
 ```sh
 mardo --npm-cache-clean

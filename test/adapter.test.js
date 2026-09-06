@@ -216,6 +216,33 @@ test("foreign cache paths are refused without changing their bytes", async (t) =
   assert.equal(fs.readFileSync(path.join(foreign, "keep.txt"), "utf8"), "foreign");
 });
 
+test("cache cleanup ignores another Mardo install and blocks its own running app", async (t) => {
+  const home = temporaryHome(t);
+  const cacheRoot = adapter.defaultCacheRoot(home);
+  const cache = adapter.prepareCache({ homeDirectory: home, cacheRoot });
+  await adapter.cleanCache({
+    homeDirectory: home,
+    cacheRoot: cache.root,
+    runningMardoCommands: () => ["/Applications/Mardo.app/Contents/MacOS/Mardo"]
+  });
+  const cachedExecutable = path.join(
+    cache.versions,
+    currentVersion,
+    "Mardo.app",
+    "Contents",
+    "MacOS",
+    "Mardo"
+  );
+  await assert.rejects(
+    adapter.cleanCache({
+      homeDirectory: home,
+      cacheRoot: cache.root,
+      runningMardoCommands: () => [cachedExecutable]
+    }),
+    /quit Mardo before cleaning/
+  );
+});
+
 test("native arguments stay byte-for-byte ordered and its exit status is preserved", (t) => {
   const home = temporaryHome(t);
   const helper = path.join(home, "helper.js");
