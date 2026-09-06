@@ -1,5 +1,25 @@
 # Mardo release notes
 
+## 0.9.16 — public beta
+
+Mardo now offers a precise AI handoff through the bundled mardo command and
+the current local MCP protocol. One-file forms can reveal an exact line,
+range, heading, or literal occurrence, and the app acknowledges completion
+when an AI-driven open request waits for the document to close.
+
+Settings now includes interface-size controls, and the title bar, toolbar,
+format controls, theme checkmarks, numbered lists, and new-document startup
+have received focused polish and correctness fixes. The editor's task-list
+viewport no longer jumps while checkbox state changes.
+
+This beta also includes the Mardo icon laboratory and refreshed documentation
+for AI setup, product behavior, architecture, and the prioritized future
+backlog. The public distribution command remains `mardo`; no `md` alias is
+included.
+
+Download the exact signed and notarized release from
+[mardo.app](https://mardo.flooflogic.com/releases/Mardo-0.9.16.zip).
+
 ## 0.9.15 — public beta
 
 Finder Quick Look now loads remote images through the same bounded,
