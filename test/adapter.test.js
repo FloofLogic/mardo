@@ -9,8 +9,12 @@ const { Readable } = require("node:stream");
 const test = require("node:test");
 
 const adapter = require("../lib/adapter.js");
+const packageJSON = require("../package.json");
+const currentVersion = packageJSON.version;
+const versionParts = currentVersion.split(".").map(Number);
+const nextVersion = `${versionParts[0]}.${versionParts[1]}.${versionParts[2] + 1}`;
 
-function record(version = "0.9.15", build = 692, archiveBytes = Buffer.from("archive")) {
+function record(version = currentVersion, build = 1, archiveBytes = Buffer.from("archive")) {
   return {
     schema: 1,
     product: "Mardo",
@@ -126,7 +130,7 @@ test("cache acquisition is atomic, updates by canonical version, and works offli
   };
 
   const first = await adapter.resolveApplication(options);
-  assert.equal(first.record.version, "0.9.15");
+  assert.equal(first.record.version, currentVersion);
   assert.equal(downloads, 1);
   assert.equal(fs.existsSync(first.helper), true);
   assert.equal(fs.readdirSync(cacheRoot).some((name) => name.startsWith(".work-")), false);
@@ -134,9 +138,9 @@ test("cache acquisition is atomic, updates by canonical version, and works offli
   fs.writeFileSync(path.join(cacheRoot, "current.json"), "");
   now += 10;
   const repaired = await adapter.resolveApplication(options);
-  assert.equal(repaired.record.version, "0.9.15");
+  assert.equal(repaired.record.version, currentVersion);
   assert.equal(downloads, 1);
-  assert.equal(adapter.parseReleaseRecord(fs.readFileSync(path.join(cacheRoot, "current.json"))).version, "0.9.15");
+  assert.equal(adapter.parseReleaseRecord(fs.readFileSync(path.join(cacheRoot, "current.json"))).version, currentVersion);
 
   now += 10;
   options.fetchRecord = async () => {
@@ -145,19 +149,22 @@ test("cache acquisition is atomic, updates by canonical version, and works offli
   };
   const offline = await adapter.resolveApplication(options);
   assert.equal(offline.offline, true);
-  assert.equal(offline.record.version, "0.9.15");
+  assert.equal(offline.record.version, currentVersion);
   assert.equal(downloads, 1);
 
   now += 10;
-  selected = record("0.9.16", 693, Buffer.from("new archive"));
+  selected = record(nextVersion, 2, Buffer.from("new archive"));
   options.fetchRecord = async () => {
     fetches += 1;
     return { record: selected, raw: encoded(selected) };
   };
   const updated = await adapter.resolveApplication(options);
-  assert.equal(updated.record.version, "0.9.16");
+  assert.equal(updated.record.version, nextVersion);
   assert.equal(downloads, 2);
-  assert.deepEqual(fs.readdirSync(path.join(cacheRoot, "versions")).sort(), ["0.9.15", "0.9.16"]);
+  assert.deepEqual(
+    fs.readdirSync(path.join(cacheRoot, "versions")).sort(),
+    [currentVersion, nextVersion].sort()
+  );
   assert.ok(fetches >= 3);
 });
 
@@ -190,7 +197,7 @@ test("failed acquisition leaves no promoted version or interrupted work", async 
 test("foreign cache paths are refused without changing their bytes", async (t) => {
   const home = temporaryHome(t);
   const cache = adapter.prepareCache({ homeDirectory: home, cacheRoot: adapter.defaultCacheRoot(home) });
-  const foreign = path.join(cache.versions, "0.9.15");
+  const foreign = path.join(cache.versions, currentVersion);
   fs.mkdirSync(foreign);
   fs.writeFileSync(path.join(foreign, "keep.txt"), "foreign");
   const selected = record();
@@ -232,7 +239,6 @@ test("native arguments stay byte-for-byte ordered and its exit status is preserv
 });
 
 test("package metadata has one command, no runtime dependency, and no install hook", () => {
-  const packageJSON = require("../package.json");
   assert.equal(packageJSON.name, "mardo");
   assert.deepEqual(packageJSON.bin, { mardo: "bin/mardo.js" });
   assert.deepEqual(packageJSON.os, ["darwin"]);

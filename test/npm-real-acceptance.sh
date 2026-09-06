@@ -13,6 +13,7 @@ test_home="$scratch/home"
 mkdir -p "$test_home" "$scratch/local" "$scratch/global" "$scratch/foreign/bin"
 test_home=$(cd "$test_home" && pwd -P)
 tarball=
+tarball_owned=0
 test_app=
 test_pid=
 
@@ -23,7 +24,7 @@ cleanup() {
             /bin/kill -TERM "$test_pid" 2>/dev/null || true
         fi
     fi
-    if [[ -n $tarball && $tarball == "$repo"/* ]]; then
+    if [[ $tarball_owned -eq 1 && -n $tarball ]]; then
         rm -f "$tarball"
     fi
     rm -rf "$scratch"
@@ -35,10 +36,18 @@ fail() {
     exit 1
 }
 
-tarball_json=$(cd "$repo" && npm pack --json --ignore-scripts)
-tarball_name=$(printf '%s' "$tarball_json" | node -e \
-    'let s="";process.stdin.on("data",c=>s+=c).on("end",()=>process.stdout.write(JSON.parse(s)[0].filename))')
-tarball="$repo/$tarball_name"
+package_version=$(cd "$repo" && node -p "require('./package.json').version")
+if [[ -n ${MARDO_NPM_TARBALL:-} ]]; then
+    [[ -f $MARDO_NPM_TARBALL && ! -L $MARDO_NPM_TARBALL ]] ||
+        fail "provided npm tarball is absent or symbolic"
+    tarball=$(cd "$(dirname "$MARDO_NPM_TARBALL")" && pwd -P)/$(basename "$MARDO_NPM_TARBALL")
+else
+    tarball_json=$(cd "$repo" && npm pack --json --ignore-scripts)
+    tarball_name=$(printf '%s' "$tarball_json" | node -e \
+        'let s="";process.stdin.on("data",c=>s+=c).on("end",()=>process.stdout.write(JSON.parse(s)[0].filename))')
+    tarball="$repo/$tarball_name"
+    tarball_owned=1
+fi
 
 node_path=$(command -v node)
 test_path="$(dirname "$node_path"):/usr/bin:/bin:/usr/sbin:/sbin"
@@ -53,15 +62,15 @@ cache="$test_home/Library/Application Support/Floof Logic/Mardo/npm"
 
 version=$(HOME="$test_home" PATH="$test_path:$scratch/local/node_modules/.bin" \
     "$scratch/local/node_modules/.bin/mardo" --version)
-[[ $version == "mardo 0.9.15" ]] || fail "local command reported $version"
-[[ -x "$cache/versions/0.9.15/Mardo.app/Contents/Helpers/mardo" ]] ||
+[[ $version == "mardo $package_version" ]] || fail "local command reported $version"
+[[ -x "$cache/versions/$package_version/Mardo.app/Contents/Helpers/mardo" ]] ||
     fail "local command did not acquire its own verified app"
-[[ ! -e "$cache/versions/0.9.15/Mardo.app/Contents/Helpers/md" ]] ||
+[[ ! -e "$cache/versions/$package_version/Mardo.app/Contents/Helpers/md" ]] ||
     fail "acquired app contains retired command"
 
 npx_version=$(cd "$scratch/local" && HOME="$test_home" PATH="$test_path" \
     npx --no-install mardo --version)
-[[ $npx_version == "mardo 0.9.15" ]] || fail "npx command reported $npx_version"
+[[ $npx_version == "mardo $package_version" ]] || fail "npx command reported $npx_version"
 
 printf 'foreign command\n' > "$scratch/foreign/bin/mardo"
 chmod 755 "$scratch/foreign/bin/mardo"
@@ -77,12 +86,12 @@ HOME="$test_home" PATH="$test_path" npm install -g --ignore-scripts --no-audit -
     --prefix "$scratch/global" "$tarball"
 [[ ! -e "$scratch/global/bin/md" ]] || fail "global install exposed retired command"
 global_version=$(HOME="$test_home" PATH="$test_path" "$scratch/global/bin/mardo" --version)
-[[ $global_version == "mardo 0.9.15" ]] || fail "global command reported $global_version"
+[[ $global_version == "mardo $package_version" ]] || fail "global command reported $global_version"
 
 mkdir -p "$scratch/paths with spaces"
 printf '# npm acceptance\n' > "$scratch/paths with spaces/existing.md"
 if [[ ${MARDO_NPM_GUI_ACCEPTANCE:-0} == 1 ]]; then
-    test_app="$cache/versions/0.9.15/Mardo.app/Contents/MacOS/Mardo"
+    test_app="$cache/versions/$package_version/Mardo.app/Contents/MacOS/Mardo"
     (cd "$scratch/local" && HOME="$test_home" PATH="$test_path" \
         npx --no-install mardo "$scratch/paths with spaces/existing.md")
     test_pid=$(pgrep -f "$test_app" | head -1 || true)
@@ -115,7 +124,7 @@ fi
     cd "$scratch/local"
     HOME="$test_home" PATH="$test_path" npm uninstall --ignore-scripts --no-audit --no-fund mardo
 )
-[[ -d "$cache/versions/0.9.15/Mardo.app" ]] || fail "npm uninstall silently deleted app cache"
+[[ -d "$cache/versions/$package_version/Mardo.app" ]] || fail "npm uninstall silently deleted app cache"
 
 HOME="$test_home" PATH="$test_path" npm uninstall -g --ignore-scripts --no-audit --no-fund \
     --prefix "$scratch/global" mardo
@@ -124,7 +133,7 @@ HOME="$test_home" PATH="$test_path" npm uninstall -g --ignore-scripts --no-audit
 
 printf 'unknown\n' > "$cache/keep.txt"
 HOME="$test_home" PATH="$test_path" node "$repo/bin/mardo.js" --npm-cache-clean >/dev/null
-[[ ! -d "$cache/versions/0.9.15" ]] || fail "explicit cache cleanup retained owned app"
+[[ ! -d "$cache/versions/$package_version" ]] || fail "explicit cache cleanup retained owned app"
 [[ $(cat "$cache/keep.txt") == unknown ]] || fail "explicit cache cleanup changed unknown data"
 
 printf 'Mardo npm real acceptance: PASS — local, npx, global, collision, uninstall, cleanup\n'

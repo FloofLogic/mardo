@@ -5,6 +5,7 @@ const path = require("node:path");
 const { spawnSync } = require("node:child_process");
 
 const root = path.resolve(__dirname, "..");
+const packageJSON = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
 const expected = [
   "package/NPM_CONTRACT.md",
   "package/README.md",
@@ -26,14 +27,13 @@ const actual = report.files.map((entry) => `package/${entry.path}`).sort();
 if (JSON.stringify(actual) !== JSON.stringify(expected)) {
   throw new Error(`packed file allowlist mismatch: ${JSON.stringify(actual)}`);
 }
-if (report.name !== "mardo" || report.version !== "0.9.15") {
-  throw new Error("packed identity is not mardo 0.9.15");
+if (report.name !== "mardo" || report.version !== packageJSON.version) {
+  throw new Error(`packed identity is not mardo ${packageJSON.version}`);
 }
 if (report.entryCount !== expected.length || report.unpackedSize > 131_072) {
   throw new Error("packed adapter exceeds its file-count or expanded-size bound");
 }
 
-const packageJSON = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
 const forbiddenScripts = ["preinstall", "install", "postinstall", "prepare"];
 for (const name of forbiddenScripts) {
   if (packageJSON.scripts && Object.hasOwn(packageJSON.scripts, name)) {
