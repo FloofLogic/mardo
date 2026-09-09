@@ -1,5 +1,26 @@
 # Mardo release notes
 
+## 0.9.17 — public beta
+
+Rendered Edit now routes typing, Return, Backspace, navigation, and structural
+editing through one source-owned transaction model. This release fixes input
+at concealed Markdown edges, quote continuation and caret alignment, and the
+duplicate empty row that could appear while indenting a new list item.
+
+Ordered-list conversion now numbers nested levels independently. Select the
+ordered rows you want to repair and choose Paragraph > Renumber Ordered List;
+only the selected markers change, the complete repair is one Undo action, and
+Mardo never silently rewrites later source.
+
+Copy and paste now preserve more structure across RTF and webpage content,
+including headings, lists, links, monospace text, and formatted table cells.
+The local AI handoff can read the current selection without activating Mardo,
+and revealed destinations use a distinct assistant highlight instead of
+pretending to be the user's selection.
+
+Download the exact signed and notarized release from
+[mardo.app](https://mardo.flooflogic.com/releases/Mardo-0.9.17.zip).
+
 ## 0.9.16 — public beta
 
 Mardo now offers a precise AI handoff through the bundled mardo command and
