@@ -1,7 +1,10 @@
 # Mardo
 
-Mardo is a native, file-first Markdown viewer and editor for macOS. This is its
-public package, support, security, and issue-tracking repository. Mardo's
+Mardo is a native macOS Markdown viewer and editor from Floof Logic. It renders
+ordinary `.md` files with Core Text and no web view, previews them in Finder
+Quick Look, follows saves made by coding agents while keeping your unsaved
+edits, and steps back through the states a file was in. This is its public
+package, support, security, and issue-tracking repository. Mardo's
 product source is private and is not published here.
 
 ## Download
