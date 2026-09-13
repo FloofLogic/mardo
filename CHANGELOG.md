@@ -1,5 +1,17 @@
 # Mardo release notes
 
+## 0.9.21 — public beta
+
+Mardo 0.9.21 adds trackpad pinch zoom anchored under the pointer, Open With
+and Command-E handoff to a remembered external editor, and one-step Markdown
+link creation when a web URL is pasted over selected text in Rendered Edit.
+
+This release also adds first-launch onboarding and opens `.mdx`, `.mdc`,
+`.qmd`, `.rmd`, `.mdtext`, and `.mdtxt` files, including Finder previews.
+
+Download the exact signed and notarized release from
+[mardo.app](https://mardo.flooflogic.com/releases/Mardo-0.9.21.zip).
+
 ## 0.9.17 — public beta
 
 Rendered Edit now routes typing, Return, Backspace, navigation, and structural
