@@ -7,6 +7,14 @@ edits, and steps back through the states a file was in. This is its public
 package, support, security, and issue-tracking repository. Mardo's
 product source is private and is not published here.
 
+## Engineering and benchmarks
+
+Mardo runs on **MarkEngineV3**, its own engine, built by Floof Logic. Its
+measured numbers — speed, memory, large-file behavior, and correctness — and a
+sourced, dated comparison to the field are published, auditable, in
+[ENGINEERING.md](ENGINEERING.md). Every figure names the gate that produced it
+and the date, and every change is a visible diff in that file's history.
+
 ## Download
 
 Download the current signed and notarized Mardo release from
