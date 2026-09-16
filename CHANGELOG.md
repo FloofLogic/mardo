@@ -1,5 +1,23 @@
 # Mardo release notes
 
+## 0.9.24 — public beta
+
+Mardo 0.9.24 restores never-saved drafts after an interrupted process with
+their exact text and selection. A first Save safely transfers recovery to the
+saved file, while Zen Mode now keeps the window title to the document name
+alone.
+
+HTML export now derives its reading rhythm from Mardo's measured native text,
+preserves authored blank-line spacing, and matches the app's text smoothing
+and accented list markers.
+
+This release also makes Homebrew-installed Finder previews activate reliably.
+Launching Mardo repairs stale Quick Look registration without restarting
+Finder or disturbing already-correct preview providers.
+
+Download the exact signed and notarized release from
+[mardo.app](https://mardo.flooflogic.com/releases/Mardo-0.9.24.zip).
+
 ## 0.9.21 — public beta
 
 Mardo 0.9.21 adds trackpad pinch zoom anchored under the pointer, Open With
