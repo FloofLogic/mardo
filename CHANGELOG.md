@@ -1,5 +1,25 @@
 # Mardo release notes
 
+## 0.9.25 — public beta
+
+Mardo 0.9.25 adds File → New from Clipboard, turning copied Markdown, rich
+text, or plain text into a recoverable untitled draft. Always on Top can now
+keep a document above ordinary application windows when you need a persistent
+reference.
+
+Native display math is now centered as document typography, and bounded math
+fences plus common MDX theorem, lemma, and proof markers read naturally while
+unsupported source remains visible.
+
+Copy now offers semantic HTML and rich text before its plain fallback, with
+bullets and labeled link destinations retained even in plain text. Rich paste
+preserves block structure beneath inline formatting, explicit opens activate
+correctly from full-screen windows, and cold launch work has reduced startup
+to Mardo's measured native floor.
+
+Download the exact signed and notarized release from
+[mardo.app](https://mardo.flooflogic.com/releases/Mardo-0.9.25.zip).
+
 ## 0.9.24 — public beta
 
 Mardo 0.9.24 restores never-saved drafts after an interrupted process with
