@@ -1,5 +1,20 @@
 # Mardo release notes
 
+## 0.9.26 — public beta
+
+Mardo 0.9.26 keeps list markers when copied content reaches applications that
+flatten clipboard HTML, including LinkedIn. Bullets, authored ordered values,
+task states, and nested items remain visible instead of depending on the
+receiving application to recreate them.
+
+Rendered editing now treats an ordinary hyphen in prose as ordinary text.
+Typing words around hyphens no longer leaves the following text highlighted as
+unfinished Markdown, while real line-start lists, headings, Setext headings,
+and thematic breaks retain their structural behavior.
+
+Download the exact signed and notarized release from
+[mardo.app](https://mardo.flooflogic.com/releases/Mardo-0.9.26.zip).
+
 ## 0.9.25 — public beta
 
 Mardo 0.9.25 adds File → New from Clipboard, turning copied Markdown, rich
