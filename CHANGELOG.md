@@ -1,5 +1,14 @@
 # Mardo release notes
 
+## 0.9.27 — public beta
+
+Mardo 0.9.27 makes starting a Pro trial return directly to the document you were reading, ready to type or paste. Opening a document no longer interrupts your work with a timed Pro invitation.
+
+When you open a Markdown filename that does not exist yet, Mardo now shows a centered View Only Mode · Blank File prompt without marking the untouched document Edited. You can choose Not Now and ask to start the trial again by clicking the prompt. If another tool creates or updates that file, the same window displays and follows its text without requiring Pro. Any local unsaved draft stays protected when another writer creates the destination.
+
+Download the exact signed and notarized release from
+[mardo.app](https://mardo.flooflogic.com/releases/Mardo-0.9.27.zip).
+
 ## 0.9.26 — public beta
 
 Mardo 0.9.26 keeps list markers when copied content reaches applications that
