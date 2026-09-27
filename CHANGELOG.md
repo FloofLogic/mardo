@@ -1,5 +1,14 @@
 # Mardo release notes
 
+## 0.9.28 — public beta
+
+Mardo 0.9.28 displays source newlines as visible line breaks in prose. View, Rendered Edit, Mardo's Finder Quick Look and thumbnail rendering, exported HTML and PDF, and copied text now agree on those line endings. The Markdown file's bytes remain unchanged.
+
+On initial installation, Mardo asks macOS to make it the default app for .md files. If you approve the system request, double-clicking a Markdown file and Quick Look's Open action use Mardo. If you later choose another default app, Mardo leaves that choice alone on updates.
+
+Download the exact signed and notarized release from
+[mardo.app](https://mardo.flooflogic.com/releases/Mardo-0.9.28.zip).
+
 ## 0.9.27 — public beta
 
 Mardo 0.9.27 makes starting a Pro trial return directly to the document you were reading, ready to type or paste. Opening a document no longer interrupts your work with a timed Pro invitation.
